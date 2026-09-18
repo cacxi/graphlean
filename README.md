@@ -1,9 +1,22 @@
-# graphlean
+```
+ ██████╗ ██████╗  █████╗ ██████╗ ██╗  ██╗██╗     ███████╗ █████╗ ███╗   ██╗
+██╔════╝ ██╔══██╗██╔══██╗██╔══██╗██║  ██║██║     ██╔════╝██╔══██╗████╗  ██║
+██║  ███╗██████╔╝███████║██████╔╝███████║██║     █████╗  ███████║██╔██╗ ██║
+██║   ██║██╔══██╗██╔══██║██╔═══╝ ██╔══██║██║     ██╔══╝  ██╔══██║██║╚██╗██║
+╚██████╔╝██║  ██║██║  ██║██║     ██║  ██║███████╗███████╗██║  ██║██║ ╚████║
+ ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝     ╚═╝  ╚═╝╚══════╝╚══════╝╚═╝  ╚═╝╚═╝  ╚═══╝
 
+        Claude Code · Graphify context · Headroom compression
+```
+
+[![npm version](https://img.shields.io/npm/v/graphlean.svg)](https://www.npmjs.com/package/graphlean)
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](./LICENSE)
 [![Node](https://img.shields.io/badge/node-%3E%3D20-brightgreen.svg)](https://nodejs.org)
+[![Dependencies](https://img.shields.io/badge/runtime%20deps-0-brightgreen.svg)](./package.json)
 
 Run Claude Code with Graphify-first codebase context and Headroom token compression.
+
+**Graphify and Headroom in a single package.** Two independent token-reduction tools that each require their own setup, wiring, and per-project configuration — installed, configured, and launched together by one command. They attack LLM cost from opposite ends: Graphify replaces whole-file reads with targeted knowledge-graph queries, so the model sees the few nodes that matter instead of entire source trees; Headroom compresses what is left in flight. Stacked, the savings compound.
 
 Graphlean is a thin CLI wrapper around three existing tools:
 
@@ -12,6 +25,8 @@ Graphlean is a thin CLI wrapper around three existing tools:
 - **Headroom** — context compression proxy and durable token-savings metrics
 
 It does not fork or modify Claude. It makes the setup repeatable and launches Claude through the same optimized path every time.
+
+Run `graphlean stats` at any time to see Headroom's measured savings for your own sessions.
 
 ## Requirements
 
@@ -34,14 +49,8 @@ It asks before installing system-level prerequisites unless `--yes` is supplied.
 
 ## Quickstart
 
-Graphlean is not published to npm yet, so install it from source:
-
 ```bash
-git clone git@github.com:cacxi/graphlean.git
-cd graphlean
-npm install
-npm run build
-npm link
+npm install -g graphlean
 ```
 
 Then set up any project you want to work in:
@@ -193,21 +202,28 @@ Set by Graphlean for the Claude session: `GRAPHIFY_HOOK_STRICT`, `HEADROOM_TELEM
 
 Graphlean deliberately does **not** use npm `postinstall` to silently install Python tools or run remote scripts. Dependency installation happens explicitly when you run `graphlean init`. If `uv` is missing, Graphlean asks before running Astral's official uv installer.
 
-## Publishing
+## Develop locally
 
-Verify the package name is available, then publish:
+To work on Graphlean itself, install from source instead:
 
 ```bash
-npm view graphlean
+git clone git@github.com:cacxi/graphlean.git
+cd graphlean
+npm install
+npm run build
+npm link
+```
+
+`npm run dev` runs the CLI straight from TypeScript via `tsx`, and `npm run typecheck` checks types without emitting.
+
+## Publishing
+
+```bash
 npm login
 npm publish --access public
 ```
 
-After publishing, installation becomes:
-
-```bash
-npm install -g graphlean
-```
+`prepublishOnly` builds first, and only `dist/`, `README.md`, and `LICENSE` are published.
 
 ## License
 
