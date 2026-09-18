@@ -1,0 +1,40 @@
+{
+  "name": "graphlean",
+  "version": "0.1.0",
+  "description": "Run Claude Code with Graphify-first codebase context and Headroom token compression.",
+  "type": "module",
+  "bin": {
+    "graphlean": "./dist/cli.js"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "dev": "tsx src/cli.ts",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "claude-code",
+    "graphify",
+    "headroom",
+    "ai",
+    "cli",
+    "tokens",
+    "context",
+    "knowledge-graph"
+  ],
+  "license": "Apache-2.0",
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@types/node": "^24.5.2",
+    "tsx": "^4.20.5",
+    "typescript": "^5.9.2"
+  }
+}
