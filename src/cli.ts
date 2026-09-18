@@ -17,7 +17,7 @@ function help(): void {
 Claude Code with Graphify-first context and Headroom token compression.
 
 Usage:
-  graphlean init [--yes] [--no-deps] [--no-git-hook]
+  graphlean init [--yes] [--no-deps] [--no-git-hook] [--no-graph]
   graphlean code [-- <claude args...>]
   graphlean doctor
   graphlean stats
@@ -26,7 +26,7 @@ Usage:
   graphlean --help
 
 Commands:
-  init     Install/check dependencies and configure this project
+  init     Install/check dependencies, configure this project, build the graph
   code     Start Claude Code through Headroom with strict Graphify hooks
   doctor   Check machine and project setup
   stats    Show durable Headroom token savings
@@ -52,7 +52,7 @@ async function main(): Promise<void> {
   }
 
   if (command === "init") {
-    const allowed = ["--yes", "-y", "--no-deps", "--no-git-hook"];
+    const allowed = ["--yes", "-y", "--no-deps", "--no-git-hook", "--no-graph"];
     const unknown = hasUnknownFlags(rest, allowed);
     if (unknown) throw new Error(`Unknown init option: ${unknown}`);
 
@@ -60,6 +60,7 @@ async function main(): Promise<void> {
       yes: rest.includes("--yes") || rest.includes("-y"),
       deps: !rest.includes("--no-deps"),
       gitHook: !rest.includes("--no-git-hook"),
+      graph: !rest.includes("--no-graph"),
     });
     return;
   }

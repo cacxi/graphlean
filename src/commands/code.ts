@@ -1,7 +1,7 @@
 import { commandExists } from "../lib/command.js";
 import { loadConfig } from "../lib/config.js";
 import { graphExists, installClaudeIntegration, updateGraph } from "../lib/graphify.js";
-import { savingsPath } from "../lib/paths.js";
+import { sessionEnv } from "../lib/session.js";
 import { spawnInteractive } from "../lib/command.js";
 import { ui } from "../lib/ui.js";
 
@@ -38,12 +38,7 @@ export async function codeCommand(claudeArgs: string[] = []): Promise<void> {
   ui.title("Starting Claude Code through Headroom + Graphify");
   ui.muted("Graphify strict mode: ON · Headroom compression: ON · persistent savings: ON");
 
-  const env: NodeJS.ProcessEnv = {
-    ...process.env,
-    GRAPHIFY_HOOK_STRICT: config.strictGraphify ? "1" : "0",
-    HEADROOM_TELEMETRY: config.headroomTelemetry ? "on" : "off",
-    HEADROOM_SAVINGS_PATH: savingsPath(),
-  };
+  const env = sessionEnv(config);
 
   let exitCode = 1;
   try {

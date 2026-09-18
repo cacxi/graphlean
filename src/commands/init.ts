@@ -2,7 +2,7 @@ import { existsSync } from "node:fs";
 import { join } from "node:path";
 import { ensureDependencies } from "../lib/deps.js";
 import { writeConfig, defaultConfig } from "../lib/config.js";
-import { installClaudeIntegration, installGitHook, graphExists } from "../lib/graphify.js";
+import { buildGraph, installClaudeIntegration, installGitHook, graphExists } from "../lib/graphify.js";
 import { commandExists, run } from "../lib/command.js";
 import { ui } from "../lib/ui.js";
 
@@ -10,6 +10,7 @@ export interface InitOptions {
   yes?: boolean;
   deps?: boolean;
   gitHook?: boolean;
+  graph?: boolean;
 }
 
 function inGitRepo(cwd: string): boolean {
@@ -64,8 +65,14 @@ export async function initCommand(options: InitOptions): Promise<void> {
 
   if (graphExists(cwd)) {
     ui.success("Existing Graphify graph found");
+  } else if (options.graph === false) {
+    ui.warn("Skipped the code graph build (--no-graph).");
+    console.log("  Run `graphlean code`, then run `/graphify .` once inside Claude Code.");
+  } else if (await buildGraph(cwd)) {
+    ui.success("Graphify code graph built");
   } else {
-    ui.warn("The code graph has not been built yet.");
+    // A missing graph must not fail setup; everything else is already in place.
+    ui.warn("The code graph was not built.");
     console.log("  Run `graphlean code`, then run `/graphify .` once inside Claude Code.");
   }
 
