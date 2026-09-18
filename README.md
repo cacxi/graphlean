@@ -30,22 +30,13 @@ Run `graphlean stats` at any time to see Headroom's measured savings for your ow
 
 ## Requirements
 
-Graphlean has **zero runtime npm dependencies**.
+Graphlean has **zero runtime npm dependencies**. All you need is:
 
 - Node.js 20+
-- Internet access during first-time dependency installation
+- Internet access on first run
 - A Claude account/API configuration supported by Claude Code
 
-`graphlean init` installs or checks four external tools:
-
-| Tool | Detected as | Installed by `init` |
-| --- | --- | --- |
-| Claude Code | `claude` | `npm install -g @anthropic-ai/claude-code` |
-| uv | `uv` | Astral's official installer |
-| Graphify | `graphify` | `uv tool install graphifyy` |
-| Headroom | `headroom` | `uv tool install --python 3.13 headroom-ai[proxy]` |
-
-It asks before installing system-level prerequisites unless `--yes` is supplied.
+You do not need to install anything else yourself. `graphlean init` checks for Claude Code, uv, Graphify, and Headroom, and installs whatever is missing — asking first before any system-level install, unless you pass `--yes`.
 
 ## Quickstart
 
